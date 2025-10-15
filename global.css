@@ -3,8 +3,61 @@
 @tailwind utilities;
 
 @layer base {
-  .text-edge-outline {
-    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+  html {
+    scroll-behavior: smooth;
   }
-} 
+  
+  body {
+    @apply bg-background text-text-primary font-sans antialiased;
+  }
 
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight text-primary-dark;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  p {
+    @apply text-lg leading-relaxed text-text-secondary;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-white hover:bg-accent-dark;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white;
+  }
+
+  .section {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .container {
+    @apply px-4 mx-auto max-w-7xl sm:px-6 lg:px-8;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-1;
+  }
+}

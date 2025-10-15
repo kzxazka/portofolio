@@ -6,21 +6,20 @@ import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
   title: {
-    default: "chronark.com",
-    template: "%s | chronark.com",
+    default: "Frankazastain Studio",
+    template: "%s | Frankazastain Studio",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "Creative Design & Technology Solutions for your business",
   openGraph: {
-    title: "chronark.com",
-    description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
-    url: "https://chronark.com",
-    siteName: "chronark.com",
+    title: "Frankazastain Studio",
+    description: "We help businesses grow with modern web development, UI/UX design, and branding",
+    url: "https://frankazastain.com",
+    siteName: "Frankazastain Studio",
     images: [
       {
-        url: "https://chronark.com/og.png",
-        width: 1920,
-        height: 1080,
+        url: "https://frankazastain.com/og.png",
+        width: 1200,
+        height: 630,
       },
     ],
     locale: "en-US",
@@ -38,11 +37,12 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Chronark",
+    title: "Frankazastain Studio",
     card: "summary_large_image",
+    description: "Creative Design & Technology Solutions for your business",
   },
   icons: {
-    shortcut: "/favicon.png",
+    shortcut: "/Frankazastain.png",
   },
 };
 const inter = Inter({
