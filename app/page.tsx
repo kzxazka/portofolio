@@ -94,6 +94,7 @@ const generateStaticGrid = () => {
 
 export default function Home() {
   const [githubGrid, setGithubGrid] = React.useState<string[][]>([]);
+  const [githubCommits, setGithubCommits] = React.useState<string>("Loading commits...");
   const [monkeytype, setMonkeytype] = React.useState<{ wpm: number; accuracy: number }>({ wpm: 128, accuracy: 99.2 });
 
   React.useEffect(() => {
@@ -108,6 +109,24 @@ export default function Home() {
         }
       })
       .catch((err) => console.error("Error loading Monkeytype stats:", err));
+
+    // Fetch live GitHub contributions
+    const intensities = ["bg-zinc-900/60", "bg-emerald-950/40", "bg-emerald-800/40", "bg-emerald-600/50", "bg-emerald-400/60"];
+    fetch("/api/github-contributions")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && Array.isArray(data.grid)) {
+          const mappedGrid = data.grid.map((row: number[]) =>
+            row.map((level) => intensities[level] || intensities[0])
+          );
+          setGithubGrid(mappedGrid);
+          setGithubCommits(`${data.totalCommits} contributions/year`);
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading GitHub contributions:", err);
+        setGithubCommits("1,482 commits/year");
+      });
   }, []);
 
   const displayGrid = React.useMemo(() => {
@@ -278,7 +297,7 @@ export default function Home() {
                 </div>
                 <span className="font-semibold text-sm">GitHub Contributions</span>
               </div>
-              <span className="text-xs text-zinc-500 font-mono">1,482 commits/year</span>
+              <span className="text-xs text-zinc-500 font-mono">{githubCommits}</span>
             </div>
 
             {/* Grid of contribution boxes */}
