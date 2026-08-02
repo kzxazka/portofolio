@@ -28,6 +28,8 @@ interface ProjectFormProps {
     repository?: string | null;
     published: boolean;
     imageUrl?: string | null;
+    imageUrl2?: string | null;
+    imageUrl3?: string | null;
   };
   onSuccess: () => void;
   onCancel: () => void;
@@ -35,8 +37,12 @@ interface ProjectFormProps {
 
 export default function ProjectForm({ initialValues, onSuccess, onCancel }: ProjectFormProps) {
   const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(initialValues?.imageUrl || null);
+  const [imageFile1, setImageFile1] = useState<File | null>(null);
+  const [imagePreview1, setImagePreview1] = useState<string | null>(initialValues?.imageUrl || null);
+  const [imageFile2, setImageFile2] = useState<File | null>(null);
+  const [imagePreview2, setImagePreview2] = useState<string | null>(initialValues?.imageUrl2 || null);
+  const [imageFile3, setImageFile3] = useState<File | null>(null);
+  const [imagePreview3, setImagePreview3] = useState<string | null>(initialValues?.imageUrl3 || null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const {
@@ -55,30 +61,56 @@ export default function ProjectForm({ initialValues, onSuccess, onCancel }: Proj
     },
   });
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-    }
+  const cleanDescription = (text: string): string => {
+    if (!text) return "";
+    return text
+      // Replace LaTeX symbols (string-based replaceAll is safe from carriage return regex parsing bugs)
+      .replaceAll("$\\rightarrow$", "→")
+      .replaceAll("\\rightarrow", "→")
+      .replaceAll("$\\leftarrow$", "←")
+      .replaceAll("\\leftarrow", "←")
+      .replaceAll("$\\bullet$", "•")
+      .replaceAll("\\bullet", "•")
+      .replaceAll("$\\checkmark$", "✓")
+      .replaceAll("\\checkmark", "✓")
+      // Replace standard text arrows
+      .replaceAll("->", "→")
+      .replaceAll("<-", "←")
+      // Replace LaTeX newline symbols if pasted
+      .replaceAll("\\newline", "\n")
+      .replaceAll("\\n", "\n");
   };
 
   const onSubmit = async (values: ProjectFormValues) => {
     setLoading(true);
     setErrorMsg(null);
     try {
-      let finalImageUrl = initialValues?.imageUrl || undefined;
+      let finalImageUrl = imagePreview1 ? (initialValues?.imageUrl || undefined) : undefined;
+      let finalImageUrl2 = imagePreview2 ? (initialValues?.imageUrl2 || undefined) : undefined;
+      let finalImageUrl3 = imagePreview3 ? (initialValues?.imageUrl3 || undefined) : undefined;
 
-      // Handle image upload first if a new file is chosen
-      if (imageFile) {
+      if (imageFile1) {
         const formData = new FormData();
-        formData.append("file", imageFile);
+        formData.append("file", imageFile1);
         finalImageUrl = await uploadAndOptimizeImage(formData);
+      }
+      if (imageFile2) {
+        const formData = new FormData();
+        formData.append("file", imageFile2);
+        finalImageUrl2 = await uploadAndOptimizeImage(formData);
+      }
+      if (imageFile3) {
+        const formData = new FormData();
+        formData.append("file", imageFile3);
+        finalImageUrl3 = await uploadAndOptimizeImage(formData);
       }
 
       const payload = {
         ...values,
+        description: cleanDescription(values.description),
         imageUrl: finalImageUrl,
+        imageUrl2: finalImageUrl2,
+        imageUrl3: finalImageUrl3,
       };
 
       if (initialValues?.id) {
@@ -176,41 +208,123 @@ export default function ProjectForm({ initialValues, onSuccess, onCancel }: Proj
         </div>
       </div>
 
-      {/* Image Upload */}
+      {/* Images Upload (Up to 3 Screenshots) */}
       <div className="space-y-2">
-        <label className="text-xs text-zinc-400 font-medium block">Project Screenshot</label>
-        <div className="flex items-center gap-4">
-          {imagePreview ? (
-            <div className="relative w-32 h-20 rounded-xl border border-zinc-850 overflow-hidden bg-zinc-950 flex-shrink-0 group">
-              <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-              <button
-                type="button"
-                onClick={() => {
-                  setImageFile(null);
-                  setImagePreview(null);
-                }}
-                className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-          ) : (
-            <label className="w-32 h-20 rounded-xl border-2 border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 flex flex-col items-center justify-center cursor-pointer text-zinc-500 hover:text-zinc-400 transition-all flex-shrink-0">
-              <UploadCloud className="w-5 h-5" />
-              <span className="text-[10px] mt-1 font-medium">Upload Image</span>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
-              />
-            </label>
-          )}
-          <div className="text-[11px] text-zinc-500 leading-normal">
-            JPEG, PNG, WEBP.
-            <br />
-            Optimized as: Max width 1200px (80% Quality JPEG)
+        <label className="text-xs text-zinc-400 font-medium block">Project Screenshots (Up to 3 optional screenshots)</label>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Screenshot 1 */}
+          <div className="space-y-1">
+            <span className="text-[10px] text-zinc-500 font-medium block">Primary Screenshot</span>
+            {imagePreview1 ? (
+              <div className="relative w-full h-24 rounded-xl border border-zinc-850 overflow-hidden bg-zinc-950 group">
+                <img src={imagePreview1} alt="Preview 1" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageFile1(null);
+                    setImagePreview1(null);
+                  }}
+                  className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <label className="w-full h-24 rounded-xl border-2 border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 flex flex-col items-center justify-center cursor-pointer text-zinc-500 hover:text-zinc-400 transition-all">
+                <UploadCloud className="w-5 h-5" />
+                <span className="text-[10px] mt-1 font-medium">Upload Image 1</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImageFile1(file);
+                      setImagePreview1(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
+
+          {/* Screenshot 2 */}
+          <div className="space-y-1">
+            <span className="text-[10px] text-zinc-500 font-medium block">Screenshot 2 (Optional)</span>
+            {imagePreview2 ? (
+              <div className="relative w-full h-24 rounded-xl border border-zinc-850 overflow-hidden bg-zinc-950 group">
+                <img src={imagePreview2} alt="Preview 2" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageFile2(null);
+                    setImagePreview2(null);
+                  }}
+                  className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <label className="w-full h-24 rounded-xl border-2 border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 flex flex-col items-center justify-center cursor-pointer text-zinc-500 hover:text-zinc-400 transition-all">
+                <UploadCloud className="w-5 h-5" />
+                <span className="text-[10px] mt-1 font-medium">Upload Image 2</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImageFile2(file);
+                      setImagePreview2(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+            )}
+          </div>
+
+          {/* Screenshot 3 */}
+          <div className="space-y-1">
+            <span className="text-[10px] text-zinc-500 font-medium block">Screenshot 3 (Optional)</span>
+            {imagePreview3 ? (
+              <div className="relative w-full h-24 rounded-xl border border-zinc-850 overflow-hidden bg-zinc-950 group">
+                <img src={imagePreview3} alt="Preview 3" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageFile3(null);
+                    setImagePreview3(null);
+                  }}
+                  className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <label className="w-full h-24 rounded-xl border-2 border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 flex flex-col items-center justify-center cursor-pointer text-zinc-500 hover:text-zinc-400 transition-all">
+                <UploadCloud className="w-5 h-5" />
+                <span className="text-[10px] mt-1 font-medium">Upload Image 3</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setImageFile3(file);
+                      setImagePreview3(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+            )}
+          </div>
+        </div>
+        <div className="text-[10px] text-zinc-500 leading-normal">
+          Supported: JPEG, PNG, WEBP. Optimized as max width 1200px (80% Quality JPEG).
         </div>
       </div>
 

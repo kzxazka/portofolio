@@ -17,5 +17,7 @@ export const projects = pgTable("projects", {
   repository: text("repository"),
   published: boolean("published").default(false).notNull(),
   imageUrl: text("image_url"), // URL pointing to Supabase Storage bucket
+  imageUrl2: text("image_url_2"), // Optional secondary screenshot
+  imageUrl3: text("image_url_3"), // Optional tertiary screenshot
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

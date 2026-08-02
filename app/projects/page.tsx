@@ -136,7 +136,7 @@ export default async function ProjectsPage() {
                     >
                       {featured.title}
                     </h2>
-                    <p className="mt-4 text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">
+                    <p className="mt-4 text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors line-clamp-4">
                       {featured.description}
                     </p>
                   </div>

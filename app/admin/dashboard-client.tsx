@@ -29,6 +29,8 @@ interface Project {
   repository: string | null;
   published: boolean;
   imageUrl: string | null;
+  imageUrl2: string | null;
+  imageUrl3: string | null;
 }
 
 interface Achievement {

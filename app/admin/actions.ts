@@ -8,8 +8,8 @@ import { eq } from "drizzle-orm";
 import sharp from "sharp";
 import { createClient } from "@supabase/supabase-js";
 
-async function ensureAuth() {
-  const { userId } = await auth();
+function ensureAuth() {
+  const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthorized access. Admin privileges required.");
   }
@@ -67,8 +67,11 @@ export async function createProjectAction(data: {
   repository?: string;
   published: boolean;
   imageUrl?: string;
+  imageUrl2?: string;
+  imageUrl3?: string;
 }) {
-  await ensureAuth();
+  const { userId } = auth();
+  if (!userId) throw new Error("Unauthorized");
   await db.insert(projects).values({
     slug: data.slug,
     title: data.title,
@@ -77,6 +80,8 @@ export async function createProjectAction(data: {
     repository: data.repository || null,
     published: data.published,
     imageUrl: data.imageUrl || null,
+    imageUrl2: data.imageUrl2 || null,
+    imageUrl3: data.imageUrl3 || null,
   });
   revalidatePath("/projects");
   revalidatePath("/");
@@ -92,9 +97,12 @@ export async function updateProjectAction(
     repository?: string;
     published: boolean;
     imageUrl?: string;
+    imageUrl2?: string;
+    imageUrl3?: string;
   }
 ) {
-  await ensureAuth();
+  const { userId } = auth();
+  if (!userId) throw new Error("Unauthorized");
   await db
     .update(projects)
     .set({
@@ -105,6 +113,8 @@ export async function updateProjectAction(
       repository: data.repository || null,
       published: data.published,
       imageUrl: data.imageUrl || null,
+      imageUrl2: data.imageUrl2 || null,
+      imageUrl3: data.imageUrl3 || null,
     })
     .where(eq(projects.id, id));
   revalidatePath("/projects");

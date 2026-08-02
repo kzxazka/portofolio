@@ -4,6 +4,7 @@ import { Mdx } from "@/app/components/mdx";
 import { Header } from "./header";
 import "./mdx.css";
 import { ReportView } from "./view";
+import { ImageCarousel } from "./carousel";
 import { db } from "../../../db";
 import { projects } from "../../../db/schema";
 import { eq } from "drizzle-orm";
@@ -47,17 +48,16 @@ export default async function PostPage({ params }: { params: { slug: string } })
         <ReportView slug={dbProject.slug} />
         
         <article className="px-6 py-16 mx-auto max-w-4xl w-full z-10">
-          {dbProject.imageUrl && (
-            <div className="w-full h-auto max-h-[500px] rounded-3xl overflow-hidden mb-12 border border-zinc-800 shadow-2xl bg-zinc-950">
-              <img 
-                src={dbProject.imageUrl} 
-                alt={dbProject.title} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
+          <ImageCarousel 
+            images={[
+              dbProject.imageUrl || "", 
+              dbProject.imageUrl2 || "", 
+              dbProject.imageUrl3 || ""
+            ]} 
+            title={dbProject.title} 
+          />
           
-          <div className="text-zinc-300 leading-relaxed text-lg space-y-6 whitespace-pre-line prose prose-zinc prose-invert max-w-none">
+          <div className="text-zinc-300 leading-relaxed text-lg space-y-6 whitespace-pre-wrap prose prose-zinc prose-invert max-w-none">
             {dbProject.description}
           </div>
         </article>
