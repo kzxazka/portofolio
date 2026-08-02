@@ -94,9 +94,20 @@ const generateStaticGrid = () => {
 
 export default function Home() {
   const [githubGrid, setGithubGrid] = React.useState<string[][]>([]);
+  const [monkeytype, setMonkeytype] = React.useState<{ wpm: number; accuracy: number }>({ wpm: 128, accuracy: 99.2 });
 
   React.useEffect(() => {
     setGithubGrid(generateGitHubGrid());
+    
+    // Fetch live typing speed stats from the internal API
+    fetch("/api/monkeytype")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.wpm === "number") {
+          setMonkeytype({ wpm: data.wpm, accuracy: data.accuracy });
+        }
+      })
+      .catch((err) => console.error("Error loading Monkeytype stats:", err));
   }, []);
 
   const displayGrid = React.useMemo(() => {
@@ -222,11 +233,11 @@ export default function Home() {
             <div className="my-4">
               <p className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">Typing Speed</p>
               <div className="flex items-baseline gap-2 mt-1">
-                <h3 className="text-4xl font-extrabold text-white">128</h3>
+                <h3 className="text-4xl font-extrabold text-white">{monkeytype.wpm}</h3>
                 <span className="text-zinc-400 font-medium">WPM</span>
               </div>
               <p className="text-xs text-emerald-400 mt-1 flex items-center gap-1 font-mono">
-                <span>Accuracy: 99.2%</span>
+                <span>Accuracy: {monkeytype.accuracy}%</span>
               </p>
             </div>
 
