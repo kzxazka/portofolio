@@ -12,8 +12,8 @@ import Particles from "../components/particles";
 
 const redis = Redis.fromEnv();
 
-// Revalidate cache every 60 seconds
-export const revalidate = 60;
+// Force page to render dynamically on each request (SSR)
+export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
   // Query only published projects from the Supabase database
