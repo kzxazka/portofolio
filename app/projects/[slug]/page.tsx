@@ -35,7 +35,15 @@ export default async function PostPage({ params }: { params: { slug: string } })
   if (dbProject) {
     return (
       <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
-        <Header project={dbProject} views={views} />
+        <Header 
+          project={{
+            title: dbProject.title,
+            description: dbProject.description,
+            url: dbProject.url ?? undefined,
+            repository: dbProject.repository ?? undefined,
+          }} 
+          views={views} 
+        />
         <ReportView slug={dbProject.slug} />
         
         <article className="px-6 py-16 mx-auto max-w-4xl w-full z-10">
