@@ -1,124 +1,110 @@
 "use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 
 type NavItem = {
   name: string;
   href: string;
-  isButton?: boolean;
+  isExternal?: boolean;
 };
 
 const navItems: NavItem[] = [
   { name: "Home", href: "/" },
-  { name: "Services", href: "#services" },
-  { name: "Portfolio", href: "#portfolio" },
-  { name: "About Us", href: "#about" },
-  { name: "Contact", href: "#contact", isButton: true },
+  { name: "Projects", href: "/projects" },
+  { name: "Achievements", href: "/achievements" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export const Navigation: React.FC = () => {
   const pathname = usePathname();
-  const ref = useRef<HTMLElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > 20);
     };
     
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <header 
-      ref={ref}
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/90 dark:bg-gray-800/95 backdrop-blur-md shadow-lg py-2' 
-          : 'bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm py-4'
-      }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 pt-6`}
     >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center group">
-            <span className="text-2xl font-bold text-white transition-colors duration-300 group-hover:text-accent">Frankazastain</span>
-            <span className="text-2xl font-light text-accent transition-colors duration-300 group-hover:text-white">Studio</span>
-          </Link>
+      <div className={`max-w-7xl mx-auto rounded-2xl border transition-all duration-300 px-6 py-4 flex items-center justify-between shadow-2xl ${
+        isScrolled 
+          ? "bg-zinc-950/80 backdrop-blur-lg border-zinc-800/80 shadow-black/40" 
+          : "bg-zinc-900/30 backdrop-blur-md border-zinc-900/60 shadow-black/20"
+      }`}>
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2 group">
+          <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="font-bold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
+            frankazastain.dev
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-6">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                  pathname === item.href 
-                    ? 'text-white font-medium' 
-                  : 'text-gray-300 hover:text-white transition-colors duration-200'
-                } ${item.isButton ? 'btn btn-primary rounded-full' : ''}`}
+                className={`text-sm transition-colors flex items-center gap-0.5 group ${
+                  isActive 
+                    ? "text-emerald-400 font-medium" 
+                    : "text-zinc-400 hover:text-white"
+                }`}
               >
-                {item.name}
+                <span translate="no" className="notranslate">{item.name}</span>
+                {item.href.startsWith("http") && (
+                  <ArrowUpRight className="w-3 h-3 text-zinc-500 group-hover:text-emerald-400 transition-colors" />
+                )}
               </Link>
-            ))}
-          </nav>
+            );
+          })}
+        </nav>
 
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden p-2 rounded-md text-text-primary hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {mobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* Mobile menu button */}
+        <button 
+          className="md:hidden p-2 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors duration-200 focus:outline-none border border-transparent hover:border-zinc-700"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4">
-            <div className="flex flex-col space-y-3">
-              {navItems.map((item) => (
+      {/* Mobile Navigation Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden mt-2 px-2">
+          <div className="flex flex-col space-y-2 p-4 bg-zinc-950/95 backdrop-blur-xl border border-zinc-800 rounded-2xl shadow-2xl">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`px-3 py-2 text-base font-medium rounded-md transition-colors duration-200 ${
-                    pathname === item.href 
-                      ? 'bg-accent/20 text-white' 
-                      : 'text-gray-300 hover:bg-gray-700'
+                  className={`px-3 py-2 text-sm font-medium rounded-xl transition-colors duration-200 ${
+                    isActive 
+                      ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" 
+                      : "text-zinc-400 hover:bg-zinc-900 hover:text-white border border-transparent"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.name}
+                  <span translate="no" className="notranslate">{item.name}</span>
                 </Link>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 };
