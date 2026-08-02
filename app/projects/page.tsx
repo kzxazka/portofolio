@@ -16,11 +16,17 @@ const redis = Redis.fromEnv();
 export const dynamic = "force-dynamic";
 
 export default async function ProjectsPage() {
-  // Query only published projects from the Supabase database
-  const allProjects = await db
-    .select()
-    .from(projects)
-    .where(eq(projects.published, true));
+  let allProjects: any[] = [];
+  try {
+    // Query only published projects from the Supabase database
+    allProjects = await db
+      .select()
+      .from(projects)
+      .where(eq(projects.published, true));
+  } catch (error) {
+    console.error("Supabase connection failed, falling back to empty projects list:", error);
+    allProjects = [];
+  }
 
   const views = allProjects.length > 0
     ? (
