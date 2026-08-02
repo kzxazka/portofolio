@@ -424,7 +424,7 @@ export default function Home() {
 
               <div className="grid grid-cols-2 gap-2 pt-2">
                 <a
-                  href="mailto:info@frankazastain.com"
+                  href="mailto:atqiyaazka96@gmail.com"
                   className="flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-800/40 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-xs transition-colors"
                 >
                   <Mail className="w-3.5 h-3.5" />
@@ -440,7 +440,7 @@ export default function Home() {
                   GitHub
                 </a>
                 <a
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://www.linkedin.com/in/azka-atqiya-3659392ab?utm_source=share_via&utm_content=profile&utm_medium=member_android"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 px-3 py-2 rounded-xl bg-zinc-800/40 border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white text-xs transition-colors"
@@ -459,7 +459,7 @@ export default function Home() {
             </div>
 
             <div className="text-[10px] text-zinc-500 font-mono text-center border-t border-zinc-800/80 pt-2.5 mt-3">
-              Surabaya, Indonesia
+              Bandar Lampung, Indonesia
             </div>
           </motion.div>
         </motion.div>
