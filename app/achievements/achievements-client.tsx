@@ -112,15 +112,13 @@ interface AchievementsClientProps {
 
 export default function AchievementsClient({ dbAchievements }: AchievementsClientProps) {
   // Convert database achievements to the presentation structure
-  const displayCertifications: Certification[] = dbAchievements.length > 0
-    ? dbAchievements.map((ach) => ({
-        title: ach.title,
-        issuer: "Portfolio Certified Milestones",
-        date: ach.date,
-        description: ach.description,
-        tags: ["Verified", "Achievement"],
-      }))
-    : fallbackCertifications;
+  const displayCertifications: Certification[] = dbAchievements.map((ach) => ({
+    title: ach.title,
+    issuer: "Portfolio Certified Milestones",
+    date: ach.date,
+    description: ach.description,
+    tags: ["Verified", "Achievement"],
+  }));
 
   return (
     <main className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col relative overflow-hidden font-sans pb-16 selection:bg-zinc-800 selection:text-emerald-400">
@@ -150,76 +148,86 @@ export default function AchievementsClient({ dbAchievements }: AchievementsClien
         </div>
 
         {/* Bento/Grid style for Certifications */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
-        >
-          {displayCertifications.map((cert, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={cardHoverEffect}
-              className="h-full"
-            >
-              <Card>
-                <div className="p-6 flex flex-col justify-between h-full min-h-[300px] relative group">
-                  <div className="space-y-4">
-                    {/* Top Row: Icon + Date */}
-                    <div className="flex items-center justify-between">
-                      <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-emerald-400 group-hover:text-emerald-350 transition-colors">
-                        {cert.title.includes("AWS") ? <Cpu className="w-5 h-5" /> :
-                         cert.title.includes("English") ? <Globe className="w-5 h-5" /> :
-                         cert.title.includes("Laravel") ? <ShieldCheck className="w-5 h-5" /> :
-                         <BookOpen className="w-5 h-5" />}
+        {displayCertifications.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-12 bg-zinc-900/10 border border-zinc-900/60 rounded-3xl min-h-[300px] text-center max-w-xl mx-auto mt-8 backdrop-blur-sm">
+            <Award className="w-12 h-12 text-zinc-650 mb-4 animate-pulse" />
+            <h3 className="text-xl font-bold text-white mb-2">No Achievements Yet</h3>
+            <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
+              Official certifications and milestones will appear here once they are added in the database.
+            </p>
+          </div>
+        ) : (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full"
+          >
+            {displayCertifications.map((cert, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                whileHover={cardHoverEffect}
+                className="h-full"
+              >
+                <Card>
+                  <div className="p-6 flex flex-col justify-between h-full min-h-[300px] relative group">
+                    <div className="space-y-4">
+                      {/* Top Row: Icon + Date */}
+                      <div className="flex items-center justify-between">
+                        <div className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-emerald-400 group-hover:text-emerald-350 transition-colors">
+                          {cert.title.includes("AWS") ? <Cpu className="w-5 h-5" /> :
+                           cert.title.includes("English") ? <Globe className="w-5 h-5" /> :
+                           cert.title.includes("Laravel") ? <ShieldCheck className="w-5 h-5" /> :
+                           <BookOpen className="w-5 h-5" />}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-mono">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {cert.date}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1.5 text-xs text-zinc-500 font-mono">
-                        <Calendar className="w-3.5 h-3.5" />
-                        {cert.date}
+
+                      {/* Cert Title & Issuer */}
+                      <div>
+                        <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors leading-snug">
+                          {cert.title}
+                        </h3>
+                        <p className="text-xs text-zinc-400 font-medium mt-1 font-mono">{cert.issuer}</p>
                       </div>
+
+                      {/* Cert Description */}
+                      <p className="text-xs text-zinc-400 leading-relaxed line-clamp-4">
+                        {cert.description}
+                      </p>
                     </div>
 
-                    {/* Cert Title & Issuer */}
-                    <div>
-                      <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors leading-snug">
-                        {cert.title}
-                      </h3>
-                      <p className="text-xs text-zinc-400 font-medium mt-1 font-mono">{cert.issuer}</p>
-                    </div>
+                    {/* Footer Row: Tags */}
+                    <div className="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between">
+                      <div className="flex flex-wrap gap-1">
+                        {cert.tags.slice(0, 2).map((tag, tIdx) => (
+                          <span key={tIdx} className="text-[10px] bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded text-zinc-400">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
 
-                    {/* Cert Description */}
-                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-4">
-                      {cert.description}
-                    </p>
+                      {cert.credentialUrl && (
+                        <a
+                          href={cert.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold text-emerald-400 hover:text-emerald-350 transition-colors flex items-center gap-0.5"
+                        >
+                          Verify <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-
-                  {/* Footer Row: Tags */}
-                  <div className="mt-6 pt-4 border-t border-zinc-900/60 flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1">
-                      {cert.tags.slice(0, 2).map((tag, tIdx) => (
-                        <span key={tIdx} className="text-[10px] bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded text-zinc-400">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {cert.credentialUrl && (
-                      <a
-                        href={cert.credentialUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-semibold text-emerald-400 hover:text-emerald-350 transition-colors flex items-center gap-0.5"
-                      >
-                        Verify <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </section>
 
       {/* Minimal Footer */}
