@@ -21,7 +21,9 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 	if (project.repository) {
 		links.push({
 			label: "GitHub",
-			href: `https://github.com/${project.repository}`,
+			href: project.repository.startsWith("http")
+				? project.repository
+				: `https://github.com/${project.repository}`,
 		});
 	}
 	if (project.url) {
