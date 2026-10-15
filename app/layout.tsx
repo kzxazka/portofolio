@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from './theme-provider'
+// @ts-expect-error Next.js processes global CSS imports during the build.
 import './globals.css'
 
 export const metadata = {
