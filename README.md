@@ -1,4 +1,4 @@
-# frankazastain-porto
+# azka-porto
 
 Portofolio website built with Next.js, Tailwind CSS, and MDX. This project showcases personal and professional works, with a modern UI and smooth page transitions.
 

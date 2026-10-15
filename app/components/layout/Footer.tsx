@@ -10,7 +10,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* About */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-bold mb-4">Frankazastain Studio</h3>
+            <h3 className="text-2xl font-bold mb-4">azka aka frankazastain</h3>
             <p className="text-gray-400 mb-4">
               We create beautiful and functional digital experiences that help businesses grow in the digital world.
             </p>
@@ -48,8 +48,8 @@ export const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <Mail className="w-5 h-5 mt-0.5 text-accent mr-3 flex-shrink-0" />
-                <a href="mailto:hello@frankazastain.com" className="text-gray-400 hover:text-white transition-colors">
-                  hello@frankazastain.com
+                <a href="mailto:hello@azka.com" className="text-gray-400 hover:text-white transition-colors">
+                  hello@azka.com
                 </a>
               </li>
               <li className="flex items-start">
@@ -71,7 +71,7 @@ export const Footer = () => {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © {currentYear} Frankazastain Studio. All rights reserved.
+              © {currentYear} azka aka frankazastain. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">

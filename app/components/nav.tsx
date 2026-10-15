@@ -45,7 +45,7 @@ export const Navigation: React.FC = () => {
         <Link href="/" className="flex items-center space-x-2 group">
           <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-bold tracking-tight text-white group-hover:text-emerald-400 transition-colors">
-            frankazastain.dev | Muhamad Azka Atqiya
+            azka | Muhamad Azka Atqiya
           </span>
         </Link>
 
