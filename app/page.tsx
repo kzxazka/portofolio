@@ -167,7 +167,7 @@ export default function Home() {
                 Available for New Projects
               </div>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
-                Hey, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-emerald-400">Frankazastain</span>
+                Hey, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-emerald-400">Muhamad Azka Atqiya</span>
               </h1>
               <p className="text-zinc-400 text-base md:text-lg leading-relaxed max-w-xl">
                 A passionate Fullstack Developer specializing in building high-performance web applications, dynamic database management, and premium user experiences. I craft clean, interactive code using <span className="text-white">Next.js</span> and <span className="text-white">Laravel</span>.
