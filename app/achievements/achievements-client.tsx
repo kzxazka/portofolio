@@ -232,7 +232,7 @@ export default function AchievementsClient({ dbAchievements }: AchievementsClien
 
       {/* Minimal Footer */}
       <footer className="w-full max-w-7xl mx-auto px-6 mt-16 text-center text-xs text-zinc-600 z-10 flex items-center justify-between border-t border-zinc-900 pt-6">
-        <div>&copy; {new Date().getFullYear()} Frankazastain. All rights reserved.</div>
+        <div>&copy; {new Date().getFullYear()} Azka aka Frankazastain. All rights reserved.</div>
       </footer>
     </main>
   );

@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* About */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-xl font-bold mb-4">Frankazastain Studio</h3>
+            <h3 className="text-xl font-bold mb-4">Frankazastain Studio | Muhamad Azka Atqiya</h3>
             <p className="text-gray-300 mb-4">
               Creative design and technology solutions to help your business grow and succeed in the digital world.
             </p>
@@ -65,7 +65,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
-          <p>© {currentYear} Frankazastain Studio. All rights reserved.</p>
+          <p>© {currentYear} Azka aka Frankazastain Studio. All rights reserved.</p>
         </div>
       </div>
     </footer>

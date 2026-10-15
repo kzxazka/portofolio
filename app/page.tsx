@@ -467,7 +467,7 @@ export default function Home() {
 
       {/* Modern Minimalist Footer */}
       <footer className="w-full max-w-7xl mx-auto px-6 mt-12 text-center text-xs text-zinc-600 z-10 flex items-center justify-between border-t border-zinc-900 pt-6">
-        <div>&copy; {new Date().getFullYear()} Frankazastain. Built with Next.js & Tailwind.</div>
+        <div>&copy; {new Date().getFullYear()} Azka aka Frankazastain. Built with Next.js & Tailwind.</div>
         <div className="flex gap-4">
           <span className="hover:text-zinc-400 cursor-pointer">Privacy Policy</span>
           <span className="hover:text-zinc-400 cursor-pointer">Terms of Service</span>

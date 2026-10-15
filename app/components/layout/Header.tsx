@@ -48,7 +48,7 @@ export const Header = () => {
               Frankazastain
             </span>
             <span className="text-2xl font-light text-accent transition-colors duration-300 group-hover:text-primary">
-              Studio
+              Studio | Muhamad Azka Atqiya
             </span>
           </Link>
 
